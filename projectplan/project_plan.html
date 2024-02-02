@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.js"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://kit.fontawesome.com/b38ad03545.js" crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -81,12 +83,44 @@
         li {
             list-style: none;
         }
+
+        .aitextbox {
+            width: 50%;
+            height: 300px;
+            position: fixed;
+            left: 25%;
+            top: 20%;
+            background-color: #dbdbdb;
+            border-radius: 10px;
+            margin: auto;
+            z-index: 4;
+            color: black;
+            display: none;
+
+        }
+
+        .aitextbox h2 {
+            text-align: center;
+        }
+
+        .aitextbox p {
+            padding: 10px;
+        }
+        
     </style>
 
 
 </head>
 
 <body>
+    <!-- The contents for this box will be adding dynamically -->
+    <div class="aitextbox">
+        <h2 class="heading"></h2>
+        <p class="type-auto"></p>
+        <!-- <i class="fa-solid fa-spinner"
+        style="color: #9500ff; "
+        ></i> -->
+    </div>
 
     <div id="ganttChart">
         <div class="wrapper">
@@ -178,6 +212,7 @@
         </div>
 
 
+
         <!-- Table to display task and employee details -->
         <table id="taskDetailsTable" style="margin-top: 20px; width: 100%;border-radius: 5px;" border="1">
             <thead>
@@ -192,7 +227,9 @@
             <tbody>
                 <!-- Table rows will be populated dynamically -->
             </tbody>
+
         </table>
+
 
         <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -962,9 +999,29 @@
             const gantt = document.querySelector('.gantt');
             let button = document.createElement('button')
             const dateMonth = document.querySelectorAll('.months')
+            const AITextBox = document.querySelector('.aitextbox')
+            const wrapper = document.querySelector('#ganttChart')
+            const body = document.body;
+            // const textPara = document.querySelector('.type-auto')
+
             // const barRow = document.querySelectorAll('.gantt__row-bars')
 
-            button.className = 'button'
+            button.className = 'button';
+
+
+            const typedHeading = new Typed('.heading', {
+                strings: ['AI Intelligence is Activated'],
+                typeSpeed: 150,
+                backSpeed: 150,
+                loop: true
+            })
+
+            let typed = new Typed('.type-auto', {
+                strings: ['The Semrush AI Text Generator, also known as an AI typer, is a tool powered by artificial intelligence. It uses data and language patterns to generate text from the input it gets. Think of it as a digital writer who understands your needs and can create content that resonates with your audience.'],
+                typeSpeed: 150,
+                backSpeed: 150,
+                loop: true
+            })
 
             //Creating Parent Wrapper box dynamically
             for (let i = 0; i < ganttData.length; i++) {
@@ -1039,7 +1096,6 @@
                     cell5.innerHTML = ganttData[i].taskname
 
 
-
                     let workStatus = loopData.work_status;
                     for (let j = 0; j < workStatus.length; j++) {
                         if (workStatus[j] == "going on leave" || workStatus == "leave") {
@@ -1049,25 +1105,10 @@
                             cell5.appendChild(button)
                         }
                     }
-                    
-
-
-
-
-
-
-
-
                 })
 
                 li.style.gridColumn = `${startMonth}/11`;
-
-
-
                 ul.appendChild(li)
-
-
-
                 newBoxRow.innerHTML = ganttData[i].taskname;
                 newBox.appendChild(newBoxRow)
                 newBox.appendChild(ul)
@@ -1075,8 +1116,10 @@
             }
 
             button.addEventListener('click', function () {
-                console.log('Hi')
+                AITextBox.style.display = 'block';
+                wrapper.style.opacity = 0.2
             })
+            
 
 
 
