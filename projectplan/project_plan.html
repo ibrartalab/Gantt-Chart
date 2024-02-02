@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.js"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeline-plus@0.9.3/dist/timeline-min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" /> -->
+    <link rel="stylesheet" href="ganttstyle.css">
+    <title>iPM</title>
+
+    <style>
+        #taskDetailsTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #taskDetailsTable th,
+        #taskDetailsTable td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #taskDetailsTable th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        #taskDetailsTable tbody tr:nth-child(even) {
+            background-color: #b3cdda;
+        }
+
+        #taskDetailsTable tbody tr:hover {
+            background-color: #9cb5c0;
+        }
+
+        .button {
+            background-color: #52798b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-left: 10px;
+            transition: transform 0.2s, color 0.2s, background-color 0.2s;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background-color: #d0d3d4;
+            color: #06597f;
+        }
+        .sedate{
+            width: 300px;
+            height: 20px;
+            background-color: #6800f9 !important;
+
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="ganttChart">
+        <div class="wrapper">
+            <!-- <div class="header">
+                <h2>Gantt Chart Concept with CSS-Grid</h2>
+                <p>Use <strong>grid-column</strong> to span a new entry across the grid. (e. g. <strong>grid-column: 5/12;</strong> spans an entry from May to November)	</p>
+            </div> -->
+            <div class="gantt">
+                <div class="gantt__row gantt__row--months" style="position: relative;">
+                    <div class="month-wrapper"
+                        style="color: black; width: 750px; height: 60px; text-align: center; border-radius: 10px; position: absolute; top: 100%;left: 13%; z-index: 2; display: none;">
+
+                    </div>
+
+                    <div class="gantt__row-first-title">Task Name</div>
+                    <span class="months">Jan</span><span class="months">Feb</span><span class="months">Mar</span>
+                    <span class="months">Apr</span><span class="months">May</span><span class="months">Jun</span>
+                    <span class="months">Jul</span><span class="months">Aug</span><span class="months">Sep</span>
+                    <span class="months">Oct</span><span class="months">Nov</span><span class="months">Dec</span>
+                </div>
+                <div class="gantt__row gantt__row--lines" data-month="6">
+                    <span class=""></span><span class=""></span><span class=""></span>
+                    <span class=""></span><span class=""></span><span></span>
+                    <span class=""></span><span class="marker"></span><span class=""></span>
+                    <span class=""></span><span class=""></span><span class=""></span>
+                </div>
+                <!-- <div class="gantt__row">
+                    <div class="gantt__row-first">
+                        Barnard Posselt
+                    </div>
+                    <ul class="gantt__row-bars">
+                        <li style="grid-column: 4/11; background-color: #2ecaac;">Even longer project</li>
+                    </ul>
+                </div> -->
+                <!-- <div class="gantt__row gantt__row--empty">
+                    <div class="gantt__row-first">
+                        Ryley Huggons
+                    </div>
+                    <ul class="gantt__row-bars"></ul>
+                </div> -->
+                <!-- <div class="gantt__row">
+                    <div class="gantt__row-first">
+                        Lanie Erwin
+                    </div>
+                    <ul class="gantt__row-bars">
+                        <li style="grid-column: 2/5; background-color: #2ecaac;">Start Februar 🙌</li>
+                        <li style="grid-column: 1/6; background-color: #ff6252;" class="stripes"></li>
+                        <li style="grid-column: 7/11; background-color: #54c6f9;">Same line</li>
+                    </ul>
+                </div> -->
+                <!-- <div class="gantt__row gantt__row--empty">
+                    <div class="gantt__row-first">
+                        Krishnah Pauleit
+                    </div>
+                    <ul class="gantt__row-bars"></ul>
+                </div> -->
+                <!-- <div class="gantt__row gantt__row--empty">
+                    <div class="gantt__row-first">
+                        Hobard Lampitt
+                    </div>
+                    <ul class="gantt__row-bars"></ul>
+                </div> -->
+                <!-- <div class="gantt__row">
+                    <div class="gantt__row-first">
+                        Virgilio Jeanes
+                    </div>
+                    <ul class="gantt__row-bars">
+                        <li style="grid-column: 2/5; background-color: #2ecaac;"></li>
+                    </ul>
+                </div> -->
+                <!-- <div class="gantt__row">
+                    <div class="gantt__row-first">
+                        Ky Verick
+                    </div>
+                    <ul class="gantt__row-bars">
+                        <li style="grid-column: 3/8; background-color: #54c6f9;">Long project</li>
+                    </ul>
+                </div> -->
+
+                <!-- <div class="gantt__row">
+                    <div class="gantt__row-first">
+                        Ketti Waterworth
+                    </div>
+                    <ul class="gantt__row-bars">
+                        <li style="grid-column: 4/9; background-color: #ff6252;" class="stripes">A title</li>
+                    </ul>
+                </div> -->
+            </div>
+        </div>
+
+
+        <!-- Table to display task and employee details -->
+        <table id="taskDetailsTable" style="margin-top: 20px; width: 100%;border-radius: 5px;" border="1">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Type</th>
+                    <th>Employee Name</th>
+                    <th>Work Status</th>
+                    <th>Suggestion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be populated dynamically -->
+            </tbody>
+        </table>
+
+        <!-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Dummy data coming from back end
+            var tasks = JSON.parse('{{gantt_data |tojson|safe}}');
+
+
+
+            // Initialize Gantt chart
+            const gantt = new Gantt('#ganttChart', tasks, {
+                header_height: 50,
+                column_width: 30,
+                step: 24,
+                view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
+                bar_height: 20,
+                bar_corner_radius: 3,
+                arrow_curve: 5,
+                padding: 18,
+                view_mode: 'Day',
+                date_format: 'YYYY-MM-DD',
+                custom_bar_render: function (task) {
+                    const bar = document.createElement('div');
+                    const tasknameDiv = document.createElement('div');
+                    tasknameDiv.className = 'gantt-taskname';
+                    tasknameDiv.textContent = task.taskname;
+                    bar.appendChild(tasknameDiv);
+
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'gantt-label';
+                    labelDiv.textContent = task.name;
+                    bar.appendChild(labelDiv);
+
+                    bar.className = 'bar';
+                    bar.style.width = task._bar_width + 'px';
+                    bar.style.marginLeft = task._bar_margin + 'px';
+                    bar.style.height = '20px'; // Adjust height based on your preference
+
+                    return bar;
+                },
+                custom_popup_html: function (task) {
+                    return '<div class="details-container">' +
+                        '<div><strong>Task Name:</strong> ' + task.taskname + '</div>' +
+                        '<div><strong>Name:</strong> ' + task.name + '</div>' +
+                        '<div><strong>Start:</strong> ' + task._start.format('MMM D, YYYY') + '</div>' +
+                        '<div><strong>End:</strong> ' + task._end.format('MMM D, YYYY') + '</div>' +
+                        '</div>';
+                },
+                on_click: function (task) {
+                    // Handle click event, if needed
+
+                },
+                on_date_change: function (task, start, end) {
+                    // Handle date change event, if needed
+                },
+                on_progress_change: function (task, progress) {
+                    // Handle progress change event, if needed
+                },
+            });
+        });
+    </script> -->
+        <script>
+
+
+
+
+
+            //main python logic
+            document.addEventListener('DOMContentLoaded', function () {
+                // Dummy data coming from the backend
+                var tasks = JSON.parse('{{gantt_data | tojson | safe}}');
+
+                // Calculate the total width of the Gantt chart based on task durations
+                const totalWidth = tasks.reduce((acc, task) => acc + task._bar_width + task._bar_margin, 0);
+
+                // Initialize Gantt chart
+                const ganttChartContainer = document.querySelector('#ganttChart');
+                ganttChartContainer.style.width = totalWidth + 'px'; // Set the width of the Gantt chart container
+
+                const gantt = new Gantt(ganttChartContainer, tasks, {
+                    // Gantt chart configuration options
+                    // ...
+                    header_height: 50,
+                    column_width: 30,
+                    step: 24,
+                    view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
+                    bar_height: 20,
+                    bar_corner_radius: 3,
+                    arrow_curve: 5,
+                    padding: 18,
+                    view_mode: 'Day',
+                    date_format: 'YYYY-MM-DD',
+                    custom_bar_render: function (task) {
+                        const bar = document.createElement('div');
+                        const tasknameDiv = document.createElement('div');
+                        tasknameDiv.className = 'gantt-taskname';
+                        tasknameDiv.textContent = task.taskname;
+                        bar.appendChild(tasknameDiv);
+
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'gantt-label';
+                        labelDiv.textContent = task.name;
+                        bar.appendChild(labelDiv);
+                        bar.className = 'bar';
+                        bar.style.width = task._bar_width + 'px';
+                        bar.style.marginLeft = task._bar_margin + 'px';
+                        bar.style.height = '20px';
+
+                        // Apply different colors for Milestone and Activity tasks
+                        if (task.name === 'Milestone') {
+                            bar.style.background = 'green'; // Set Milestone color to green
+                        } else {
+                            bar.style.background = 'blue'; // Set Activity color to blue
+                        }
+
+                        return bar;
+                    },
+                    custom_popup_html: function (task) {
+                        // Handle click event, update table with task and employee details
+                        updateTable(task);
+
+                        // Return details for Gantt chart popup
+                        return '<div class="details-container">' +
+                            '<div>' + task.taskname + '</div>' +
+
+                            '</div>';
+                    },
+                    on_click: function (task) {
+                        // Handle click event, update table with task and employee details
+                        updateTable(task);
+                    },
+                });
+
+                // Function to update the table with task and employee details
+                function updateTable(task) {
+                    var tableBody = document.getElementById('taskDetailsTable').getElementsByTagName('tbody')[0];
+
+                    // Clear existing rows
+                    tableBody.innerHTML = '';
+
+                    // Loop through employees and add a row for each employee
+                    for (var i = 0; i < task.employees_id.length; i++) {
+                        var newRow = tableBody.insertRow();
+
+                        // Insert cells with task and employee information
+                        var cell1 = newRow.insertCell(0);
+                        cell1.innerHTML = task.taskname;
+
+                        var cell2 = newRow.insertCell(1);
+                        cell2.innerHTML = task.name;
+
+                        var cell3 = newRow.insertCell(2);
+                        cell3.innerHTML = task.employees_name[i];
+
+                        var cell4 = newRow.insertCell(3);
+                        cell4.innerHTML = task.work_status[i];
+
+
+                        if (task.work_status[i] === "going on leave") {
+
+                            var cell5 = newRow.insertCell(4);
+                            var btn = document.createElement('button');
+                            btn.textContent = 'Suggest';
+                            btn.className = "button"
+                            btn.onclick = (function () {
+                                let currentEmployeeId = task.employees_id[i];
+                                return function () {
+
+                                    console.log('Employee ID:', currentEmployeeId);
+                                };
+                            })();
+                            cell5.appendChild(btn);
+                        } else {
+
+                            newRow.insertCell(4).innerHTML = '';
+                        }
+
+                    }
+                }
+
+
+
+
+            });
+
+
+            //-------------testing--------------------------
+            gantt_data = [
+                {
+                    "id": "Task 1",
+                    "taskname": "Site Survey",
+                    "name": "Activity / Task ",
+                    "employees_id": ["nan"],
+                    "employees_name": ["nan"],
+                    "work_status": ["working"],
+                    "start": "2024-01-14",
+                    "end": "2024-01-17",
+                },
+                {
+                    "id": "Task 2",
+                    "taskname": "Base Design",
+                    "name": "Milstone",
+                    "employees_id": ["6187.0", "6187.0", "8524.0"],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "MOHAMMED OSAMA",
+                        "MOHAMMED NASLAH",
+                    ],
+                    "work_status": ["going on leave"],
+                    "start": "2024-04-18",
+                    "end": "2024-04-18",
+                },
+                {
+                    "id": "Task 2",
+                    "taskname": "Base Design 2",
+                    "name": "Activity / Task ",
+                    "employees_id": ["6187.0", "6187.0", "8524.0"],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "MOHAMMED OSAMA",
+                        "MOHAMMED NASLAH",
+                    ],
+                    "work_status": ["working"],
+                    "start": "2024-01-18",
+                    "end": "2024-01-25",
+                },
+                {
+                    "id": "Task 2",
+                    "taskname": "Base Design 3",
+                    "name": "Activity / Task ",
+                    "employees_id": ["6187.0", "6187.0", "8524.0"],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "MOHAMMED OSAMA",
+                        "MOHAMMED NASLAH",
+                    ],
+                    "work_status": ["working"],
+                    "start": "2024-01-18",
+                    "end": "2024-01-25",
+                },
+                {
+                    "id": "Task 2",
+                    "taskname": "Base Design 4",
+                    "name": "Activity / Task ",
+                    "employees_id": ["6187.0", "6187.0", "8524.0"],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "MOHAMMED OSAMA",
+                        "MOHAMMED NASLAH",
+                    ],
+                    "work_status": ["leave"],
+                    "start": "2024-01-18",
+                    "end": "2024-01-25",
+                },
+            ]
+
+            // const daysCount = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+            // selecting DOM elements
+            const gantt = document.querySelector('.gantt');
+            let button = document.createElement('button')
+            const dateMonth = document.querySelectorAll('.months')
+            // const barRow = document.querySelectorAll('.gantt__row-bars')
+
+button.className = 'button'
+
+            //Creating Parent Wrapper box dynamically
+            for (let i = 0; i < gantt_data.length; i++) {
+                const loopData = gantt_data[i]
+                const newBox = document.createElement('div')
+                const newBoxRow = document.createElement('div')
+                const ul = document.createElement('ul')
+                ul.style.display = 'flex'
+
+                newBox.className = 'gantt__row';
+                newBoxRow.className = 'gantt__row-first';
+                ul.className = 'gantt__row-bars'
+
+                //creating the taskBars dynamically
+
+                const startDate = gantt_data[i].start;
+                const endDate = gantt_data[i].end;
+
+                const convert = new Date(startDate)
+                const convert2 = new Date(endDate)
+
+                const startMonth = convert.getMonth() + 1;
+                const endMonth = convert2.getMonth() + 1;
+
+                const li = document.createElement('li')
+
+
+                const name = gantt_data[i].name;
+                const milestone = 'Milstone'
+
+                if (name === milestone) {
+                    li.style.backgroundColor = 'green';
+                } else {
+                    li.style.backgroundColor = 'red'
+                }
+                li.innerHTML = `${gantt_data[i].name}`;
+                li.addEventListener('mouseover', function () {
+                    const span = document.createElement('li')
+                    span.className = 'sedate'
+                    span.innerHTML = `start date: ${startDate} end date: ${endDate}`
+                    ul.appendChild(span)
+                    
+                })
+                li.addEventListener('mouseout', function () {
+                    li.innerHTML = `${gantt_data[i].name}`
+                    ul.lastChild.remove()
+                    
+                })
+                li.addEventListener('click', function (e) {
+                    const table = document.getElementById('taskDetailsTable')
+                    const tbody = table.getElementsByTagName('tbody')[0]
+                    const newRow = tbody.insertRow()
+                    const cell1 = newRow.insertCell(0)
+                    cell1.innerHTML = gantt_data[i].taskname;
+                    const cell2 = newRow.insertCell(1)
+                    cell2.innerHTML = gantt_data[i].name;
+                    const cell3 = newRow.insertCell(2)
+                    cell3.innerHTML = gantt_data[i].employees_name;
+                    const cell4 = newRow.insertCell(3)
+                    cell4.innerHTML = gantt_data[i].work_status;
+                    let cell5 = newRow.insertCell(4)
+                    cell5.innerHTML = gantt_data[i].taskname
+                    
+
+                    
+                        const workStatus = loopData.work_status;
+                        if (workStatus == "going on leave" || workStatus == "leave") {
+                            
+                            button.innerHTML = 'print'
+                            cell5.appendChild(button)
+                        }
+                        
+                    
+
+                   
+
+
+
+                })
+
+                li.style.gridColumn = `${startMonth}/11`;
+
+
+
+                ul.appendChild(li)
+
+
+
+                newBoxRow.innerHTML = gantt_data[i].taskname;
+                newBox.appendChild(newBoxRow)
+                newBox.appendChild(ul)
+                gantt.appendChild(newBox)
+            }
+
+            button.addEventListener('click',function(){
+                console.log('Hi')
+            })
+
+
+
+
+
+
+        </script>
+
+
+
+
+
+</body>
+
+</html>
