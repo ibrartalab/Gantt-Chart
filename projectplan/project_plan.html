@@ -40,6 +40,7 @@
             background-color: #9cb5c0;
         }
 
+        /* Dont remove these styles*/
         .button {
             background-color: #52798b;
             color: white;
@@ -56,12 +57,29 @@
             background-color: #d0d3d4;
             color: #06597f;
         }
-        .sedate{
-            width: 30px;
-            height: 200px;
-            background-color: #6800f9 !important;
-            position: absolute;
 
+        .sedate {
+            width: 150px;
+            height: 40px;
+            background-color: #c0c0c0 !important;
+            position: absolute;
+            top: 10%;
+            left: 270px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+            padding-left: 10px;
+            padding-top: 10px;
+            border-radius: 10px;
+            text-transform: capitalize;
+            color: white;
+
+        }
+        
+        li{
+            list-style: none;
         }
     </style>
 
@@ -437,7 +455,7 @@
             const dateMonth = document.querySelectorAll('.months')
             // const barRow = document.querySelectorAll('.gantt__row-bars')
 
-button.className = 'button'
+            button.className = 'button'
 
             //Creating Parent Wrapper box dynamically
             for (let i = 0; i < gantt_data.length; i++) {
@@ -449,6 +467,7 @@ button.className = 'button'
 
                 newBox.className = 'gantt__row';
                 newBoxRow.className = 'gantt__row-first';
+                
                 ul.className = 'gantt__row-bars'
 
                 //creating the taskBars dynamically
@@ -463,6 +482,7 @@ button.className = 'button'
                 const endMonth = convert2.getMonth() + 1;
 
                 const li = document.createElement('li')
+                newBoxRow.style.position = 'relative';
 
 
                 const name = gantt_data[i].name;
@@ -475,16 +495,24 @@ button.className = 'button'
                 }
                 li.innerHTML = `${gantt_data[i].name}`;
                 li.addEventListener('mouseover', function () {
-                    const span = document.createElement('li')
+                    const divForDate = document.createElement('div')
+                    // divForDate.className = 'sedate'
+                    const span = document.createElement('span')
+                    const item1 = document.createElement('li')
+                    const item2 = document.createElement('li')
+
                     span.className = 'sedate'
-                    span.innerHTML = `start date: ${startDate} end date: ${endDate}`
-                    ul.appendChild(span)
-                    
+                    item1.innerHTML = `start date: ${startDate}`
+                    item2.innerHTML = `end date: ${endDate}`
+                    span.append(item1,item2)
+                    divForDate.appendChild(span)
+                    newBoxRow.appendChild(divForDate)
+
                 })
                 li.addEventListener('mouseout', function () {
                     li.innerHTML = `${gantt_data[i].name}`
-                    ul.lastChild.remove()
-                    
+                    newBoxRow.lastChild.remove()
+
                 })
                 li.addEventListener('click', function (e) {
                     const table = document.getElementById('taskDetailsTable')
@@ -500,19 +528,19 @@ button.className = 'button'
                     cell4.innerHTML = gantt_data[i].work_status;
                     let cell5 = newRow.insertCell(4)
                     cell5.innerHTML = gantt_data[i].taskname
-                    
 
-                    
-                        const workStatus = loopData.work_status;
-                        if (workStatus == "going on leave" || workStatus == "leave") {
-                            
-                            button.innerHTML = 'print'
-                            cell5.appendChild(button)
-                        }
-                        
-                    
 
-                   
+
+                    const workStatus = loopData.work_status;
+                    if (workStatus == "going on leave" || workStatus == "leave") {
+
+                        button.innerHTML = 'print'
+                        cell5.appendChild(button)
+                    }
+
+
+
+
 
 
 
@@ -532,7 +560,7 @@ button.className = 'button'
                 gantt.appendChild(newBox)
             }
 
-            button.addEventListener('click',function(){
+            button.addEventListener('click', function () {
                 console.log('Hi')
             })
 
