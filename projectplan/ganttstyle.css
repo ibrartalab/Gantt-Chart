@@ -88,15 +88,16 @@ html {
 }
 .gantt__row--months {
   color: #fff;
-  background-color: #0a3444 !important;
+  background-color: #014f86 !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   grid-template-columns: 150px repeat(12, 1fr);
 }
-.months {
+/* .months {
   cursor: pointer !important;
   z-index: 3;
-  color: #55de84;
-}
+  color: white;
+  
+} */
 .gantt__row--months .gantt__row-first {
   border-top: 0 !important;
   background-color: #0a3444 !important;
@@ -113,10 +114,14 @@ html {
   border-width: 1px 0 0 0;
   border-color: rgba(0, 0, 0, 0.1);
   border-style: solid;
-  padding: 15px 0;
-  font-size: 13px;
+  padding: 6px;
+  text-wrap: normal;
+  /* font-size: 10px; */
   font-weight: bold;
   text-align: center;
+  /* height: fit-content; */
+  
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 .gantt__row-bars {
   list-style: none;
@@ -176,6 +181,6 @@ html {
   top: 100%;
   left: 20%;
 }
-.table table{
+.table table {
   text-align: center;
 }
