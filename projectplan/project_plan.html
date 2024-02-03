@@ -3,16 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.js"></script>  -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <!--<script src="https://kit.fontawesome.com/b38ad03545.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.5.0/dist/frappe-gantt.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <script src="https://cdn.jsdelivr.net/npm/timeline-plus@0.9.3/dist/timeline-min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" /> -->
     <link rel="stylesheet" href="ganttstyle.css">
     <title>iPM</title>
 
@@ -90,7 +82,7 @@
             position: fixed;
             left: 25%;
             top: 20%;
-            background-color: white;
+            background-color: #f1f0f0e3;
             border-radius: 10px;
             margin: auto;
             z-index: 10;
@@ -103,32 +95,37 @@
         }
 
         .cross-btn {
-            margin-right: 10px;
+            margin-right: 20px;
             margin-top: 10px;
+
         }
 
         .cross-btn button {
             border-radius: 10px;
-            width: 30px;
-            height: 30px;
+            border: #3ba3d6;
+            width: 20px;
+            height: 20px;
             font-weight: bold;
             font-size: 1rem;
             text-align: center;
             padding: 0;
-            
+            color: #7dc5e9;
+
+
 
         }
 
         .popup {
             display: none;
-            
+
         }
 
 
         .aitextbox h2 {
             text-align: center;
-            padding-top: 10px;
-          
+
+
+
         }
 
         .aitextbox p {
@@ -140,6 +137,53 @@
             outline: none !important;
             outline-offset: none !important;
         }
+
+        .loader {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: none;
+            background-color: #a80000;
+        }
+
+        #progress-container {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 6px solid transparent;
+            border-top: 6px solid #254766;
+            /* Color of the progress bar */
+            animation: zoomIn 1s ease-in-out infinite alternate, spin 1s linear infinite;
+            /* Zoom-in and rotation animations */
+            z-index: 1000;
+            /* Ensure it's above other elements */
+            display: block;
+            /* Initially visible to cover the content */
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
 
@@ -147,12 +191,22 @@
 
 <body>
     <!-- The contents for this box will be adding dynamically -->
+    <!-- <div id="progress-container">
+        <img id="progress-image" src="https://dice-config-bucket.s3.us-east-1.amazonaws.com/static/logo.jpg"
+            alt="Progress Image">
+    </div> -->
     <div class="popup">
         <div class="aitextbox">
-            <div style="display: flex;flex-direction: column;">
-                <h2 class="heading">Intelligence is Activated</h2>
-                <div><p class="type-auto"></p></div>
+            <div style="display: flex;flex-direction:column;width: 100%;">
+                <div style="display: fixed; text-align: center;width: 100%;">
+                    <h2 class="heading">Intelligence Activated</h2>
+                </div>
+                <div style="width: 100%;">
+                    <p class="type-auto"></p>
+                </div>
+
             </div>
+
             <div class="cross-btn"></div>
         </div>
     </div>
@@ -714,24 +768,19 @@
             let wrapper = document.querySelector('#ganttChart')
             let crossBtn = document.querySelector('.cross-btn')
 
+            let loader = document.querySelector('.loader')
+            var heading = document.querySelector('.heading')
             let popupBox = document.querySelector('.popup')
             let table = document.getElementById('taskDetailsTable')
             const body = document.body;
 
-            button.className = 'button';
+            // button.className = 'button';
 
 
-       
 
 
-            let typed = new Typed('.type-auto', {
-                strings: ["Based on the provided employee and team details, I would recommend Mohammed Abdhu Ali as the best fit to take on the responsibilities of Mohammed Naslah during his leave. Mohammed Abdhu Ali is a member of the Digital Enterprise team, which is different from Mohammed Naslah's Technology & Customer Operations team. This allows for cross-functional coverage and ensures that the workload is evenly distributed.\n\nIn terms of seniority, Mohammed Abdhu Ali is not as senior as Kumaragurupara Chellappan, but he is the most suitable option available within the team. Additionally, Mohammed Abdhu Ali has the minimum hourly rate, which makes him a cost-effective choice.\n\nIt is important to note that Mohammed Abdhu Ali is not going on leave during the project start and end dates, ensuring his availability to take on the responsibilities. This recommendation is based on the criteria of cross-functional coverage, seniority within the available team, and cost-effectiveness."],
-                typeSpeed: 50,
-                
-                loop: false,
-                loopCount: 1,
-                showCursor: false,
-            })
+
+
 
 
             //Creating Parent Wrapper box dynamically
@@ -750,7 +799,7 @@
                 newBoxRow.style.textAlign = 'left'
                 newBoxRow.style.paddingLeft = '10px'
                 newBoxRow.style.fontSize = '11px'
-               
+
 
 
 
@@ -766,14 +815,16 @@
                 let stringStartMonth = startMonth.toString()
                 let stringEndMonth = endMonth.toString()
 
-                console.log(stringStartMonth, stringEndMonth)
+
 
                 const li = document.createElement('li')
 
-                
+
                 ul.style.gridColumnStart = '2'
                 li.style.gridColumn = `${stringStartMonth}/${stringEndMonth}`
-                li.style.fontSize = '10px';
+                li.style.fontSize = '9px';
+                li.style.textAlign = 'center'
+                li.style.padding = '8px'
 
                 newBoxRow.style.position = 'relative';
 
@@ -809,7 +860,7 @@
                 })
 
                 li.addEventListener('click', function (e) {
-                   
+
                     table.getElementsByTagName('tbody')[0].innerHTML = '';
 
 
@@ -829,23 +880,93 @@
                         let cell5 = newRow.insertCell(3)
                         cell5.innerHTML = ''
 
-                        let workStatus = loopData.work_status;
+                        // let workStatus = loopData.work_status;
 
 
 
-                        if (workStatus[k] == "going on leave" || workStatus[k] == "leave") {
-                            button.innerHTML = 'Suggetion'
+                        if (ganttData[i].work_status[k] == "going on leave") {
+                            let btn = document.createElement('button')
+                            btn.className = 'button'
+
+
+
+
+                            btn.addEventListener('click', function (e) {
+                                popupBox.style.display = 'block'
+                                wrapper.style.opacity = 0.1;
+
+
+                            })
+                            button2.addEventListener('click', function () {
+                                popupBox.style.display = 'none'
+                                wrapper.style.opacity = 2
+                            })
+
+                            btn.innerHTML = 'Suggetion'
                             cell5.innerText = ''
-                            cell5.appendChild(button)
+                            cell5.appendChild(btn)
+
+                            let textPara;
+                            btn.addEventListener('click', function () {
+                                let currentEmployeeId = ganttData[i].employees_id[k];
+                                    console.log(currentEmployeeId)
+
+                                var formData = new FormData();
+                                formData.append("emp_id", currentEmployeeId);
+
+                                fetch("/recommendation/", {
+                                    method: "POST",
+                                    body: formData,
+                                })
+                                    .then((response) =>
+                                        response.json()
+                                    )
+
+                                    .then(data => {
+
+                                        // if(!data.recommendation){
+                                        //     let spinner = document.getElementById('progress-container')
+                                        //     AITextBox.appendChild(spinner)
+                                        // }
+
+                                        // heading.innerText = 'Intelligence Activated'
+                                        textPara = data.recommendation;
+                                        console.log(textPara)
+
+                                        let typed = new Typed('.type-auto', {
+
+                                            strings: [`${textPara}`],
+                                            typeSpeed: 50,
+                                            loop: false,
+                                            loopCount: 1,
+                                            showCursor: false,
+                                        })
+
+
+
+                                    });
+
+
+
+
+
+                            })
+
+
                         }
                     }
+
                     const firstRow = table.querySelector('tbody tr');
 
                     if (firstRow) {
                         // Scroll to the first row of the table
                         firstRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
+
+
                 })
+
+
 
 
                 ul.appendChild(li)
@@ -861,21 +982,24 @@
 
             }
 
-            let button2 = document.createElement('button')
-            button2.className = 'button'
+            const button2 = document.createElement('button')
+            button2.innerHTML = 'X'
             crossBtn.appendChild(button2)
-          
-            button2.innerHTML = 'X';
-            button.addEventListener('click', function (e) {
 
-                popupBox.style.display = 'block'
-                console.log('kk')
-                wrapper.style.opacity = 0.1;
-            })
-            button2.addEventListener('click', function () {
-                popupBox.style.display = 'none'
-                wrapper.style.opacity = 2
-            })
+            // let button2 = document.createElement('button')
+            // button2.className = 'button'
+            // crossBtn.appendChild(button2)
+
+            // button2.innerHTML = 'X';
+            // btn.addEventListener('click', function (e) {
+            //     popupBox.style.display = 'block'
+            //     console.log('kk')
+            //     wrapper.style.opacity = 0.1;
+            // })
+            // button2.addEventListener('click', function () {
+            //     popupBox.style.display = 'none'
+            //     wrapper.style.opacity = 2
+            // })
         </script>
 </body>
 
