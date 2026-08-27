@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <link rel="stylesheet" href="ganttstyle.css">
+    <title>iPM</title>
+
+    <style>
+        #taskDetailsTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #taskDetailsTable th,
+        #taskDetailsTable td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #taskDetailsTable th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        #taskDetailsTable tbody tr:nth-child(even) {
+            background-color: #b3cdda;
+        }
+
+        #taskDetailsTable tbody tr:hover {
+            background-color: #9cb5c0;
+        }
+
+        /* Dont remove these styles*/
+        .button {
+            background-color: #52798b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-left: 10px;
+
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background-color: #d0d3d4;
+            color: #06597f;
+        }
+
+        .sedate {
+            width: 150px;
+            height: 40px;
+            background-color: #c0c0c0 !important;
+            position: absolute;
+            top: 10%;
+            left: 270px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+            padding-left: 10px;
+            padding-top: 10px;
+            border-radius: 10px;
+            text-transform: capitalize;
+            color: white;
+
+        }
+
+        li {
+            list-style: none;
+        }
+
+        .aitextbox {
+            width: 50%;
+            height: 300px;
+            position: fixed;
+            left: 25%;
+            top: 20%;
+            background-color: #f1f0f0e3;
+            border-radius: 10px;
+            margin: auto;
+            z-index: 10;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            font-style: italic;
+
+
+        }
+
+        .cross-btn {
+            margin-right: 20px;
+            margin-top: 10px;
+
+        }
+
+        .cross-btn button {
+            border-radius: 10px;
+            border: #3ba3d6;
+            width: 20px;
+            height: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0;
+            color: #7dc5e9;
+
+
+
+        }
+
+        .popup {
+            display: none;
+
+        }
+
+
+        .aitextbox h2 {
+            text-align: center;
+
+
+
+        }
+
+        .aitextbox p {
+            margin-left: 12px;
+            text-align: center;
+        }
+
+        .typed-cursor {
+            outline: none !important;
+            outline-offset: none !important;
+        }
+
+        .loader {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: none;
+            background-color: #a80000;
+        }
+
+        #progress-container {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 6px solid transparent;
+            border-top: 6px solid #254766;
+            /* Color of the progress bar */
+            animation: zoomIn 1s ease-in-out infinite alternate, spin 1s linear infinite;
+            /* Zoom-in and rotation animations */
+            z-index: 1000;
+            /* Ensure it's above other elements */
+            display: block;
+            /* Initially visible to cover the content */
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- The contents for this box will be adding dynamically -->
+    <!-- <div id="progress-container">
+        <img id="progress-image" src="https://dice-config-bucket.s3.us-east-1.amazonaws.com/static/logo.jpg"
+            alt="Progress Image">
+    </div> -->
+    <div class="popup">
+        <div class="aitextbox">
+            <div style="display: flex;flex-direction:column;width: 100%;">
+                <div style="display: fixed; text-align: center;width: 100%;">
+                    <h2 class="heading">Intelligence Activated</h2>
+                </div>
+                <div style="width: 100%;">
+                    <p class="type-auto"></p>
+                </div>
+
+            </div>
+
+            <div class="cross-btn"></div>
+        </div>
+    </div>
+
+    <div id="ganttChart">
+        <div class="wrapper">
+            <div class="gantt">
+                <div class="gantt__row gantt__row--months">
+                    <div class="gantt__row-first-title">Task Name</div>
+                    <span class="months">Jan</span><span class="months">Feb</span><span class="months">Mar</span>
+                    <span class="months">Apr</span><span class="months">May</span><span class="months">Jun</span>
+                    <span class="months">Jul</span><span class="months">Aug</span><span class="months">Sep</span>
+                    <span class="months">Oct</span><span class="months">Nov</span><span class="months">Dec</span>
+                </div>
+                <div class="gantt__row gantt__row--lines" data-month="5">
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span>
+                    <span></span><span class="marker"></span><span></span>
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Table to display task and employee details -->
+        <table id="taskDetailsTable" style="margin-top: 20px; width: 100%;border-radius: 5px;" border="1">
+            <thead>
+                <tr>
+                    <th>Task Type</th>
+                    <th>Employee Name</th>
+                    <th>Work Status</th>
+                    <th>Suggestion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be populated dynamically -->
+            </tbody>
+
+        </table>
+        <!-- Scripts -->
+        <script>
+
+            const ganttData = [
+                {
+                    "id": "Task 1",
+                    "taskname": "Site Survey",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "6187",
+                        "6187"
+                    ],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "AIJAZ AHMED MOHAMMED"
+                    ],
+                    "work_status": [
+                        "working",
+                        "leave"
+                    ],
+                    "start": "2024-01-14",
+                    "end": "2024-01-17"
+                },
+                {
+                    "id": "Task 2",
+                    "taskname": "Base Design",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "6187",
+                        "6187",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "AIJAZ AHMED MOHAMMED",
+                        "AIJAZ AHMED MOHAMMED",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-01-18",
+                    "end": "2024-01-25"
+                },
+                {
+                    "id": "Task 3",
+                    "taskname": "Final (Detailed) Design",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "5501",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "DENNY CHEMPAKASSERI MATHEW",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-06-01",
+                    "end": "2024-06-08"
+                },
+                {
+                    "id": "Task 4",
+                    "taskname": "Site Permit",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8356"
+                    ],
+                    "employees_name": [
+                        "HAMDAN AL SHAHRI"
+                    ],
+                    "work_status": [
+                        "working"
+                    ],
+                    "start": "2024-01-26",
+                    "end": "2024-02-09"
+                },
+                {
+                    "id": "Task 5",
+                    "taskname": "Micro trenching 30 inchs (762mm) depth, Supply and Install 110mm PEC with 4x38mm (Blu, Blo, Gre & White) subducts builtin with filling of concrete, with std warning tape, 2 layers of 6mil poly sheet, Green color paint on top of duct bank",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8372",
+                        "8646",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "RIZWAN NAZIR",
+                        "BERNOLLEI CATIPAY RICABORDA",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "going on leave",
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-12",
+                    "end": "2024-04-16"
+                },
+                {
+                    "id": "Task 6",
+                    "taskname": "Supply and Install Concrete Ductbank inclusive of (2x110PVC with 1x4 38mm (Blu, Blo, Gre & White) dia subducts with 6.3mm Nylon Rope) and std warning tape, 2 layers of 6mil poly sheet, Green color paint on top of duct bank",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-15",
+                    "end": "2024-03-19"
+                },
+                {
+                    "id": "Task 7",
+                    "taskname": "Supply and Install Commun Service Manhole (Type-1) 1500mmX1200mmX1850mm Inside Dim, HD Cover and Restoration",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-16",
+                    "end": "2024-02-20"
+                },
+                {
+                    "id": "Task 8",
+                    "taskname": "Supply and Install Commun Handhole (Traffic Type) 1200mmx1200mmx1200mm, HD Cover and Restoration",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-16",
+                    "end": "2024-03-01"
+                },
+                {
+                    "id": "Task 9",
+                    "taskname": "Supply and Install Special Sized CHH with 900mmX900mmX900mm inside dimensions, HD Cover and Restoration",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-16",
+                    "end": "2024-02-16"
+                },
+                {
+                    "id": "Task 10",
+                    "taskname": "Cleaning/Rehablitation/Repair of existing trench/duct bank, MH/HH per PTS ",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "8663",
+                        "7762",
+                        "7416",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "MUJEEB UR REHMAN",
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-02-10",
+                    "end": "2024-02-24"
+                },
+                {
+                    "id": "Task 11",
+                    "taskname": "Milling and re-asphalting Inclusive of normal and advanced street, width as per As per Amanah STDs",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "7762",
+                        "7416",
+                        "8598",
+                        "8372",
+                        "8646",
+                        "8663"
+                    ],
+                    "employees_name": [
+                        "IFTIKHAR KHAN",
+                        "RAJA SOBAN TAMEER",
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "RIZWAN NAZIR",
+                        "BERNOLLEI CATIPAY RICABORDA",
+                        "MUJEEB UR REHMAN"
+                    ],
+                    "work_status": [
+                        "going on leave",
+                        "going on leave",
+                        "working",
+                        "going on leave",
+                        "working",
+                        "working"
+                    ],
+                    "start": "2024-03-04",
+                    "end": "2024-04-21"
+                },
+                {
+                    "id": "Task 12",
+                    "taskname": "Civil Inspection",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "7416"
+                    ],
+                    "employees_name": [
+                        "RAJA SOBAN TAMEER"
+                    ],
+                    "work_status": [
+                        "going on leave"
+                    ],
+                    "start": "2024-04-24",
+                    "end": "2024-04-26"
+                },
+                {
+                    "id": "Task 13",
+                    "taskname": "Supply and Install 96-core (ITU-T-G.652d) UGNMFOC",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8598",
+                        "7239",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "MUHAMMAD ZUBAIR AKBAR",
+                        "JACKIE CRISTOBAL CONCEPCION",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-04-17",
+                    "end": "2024-04-27"
+                },
+                {
+                    "id": "Task 14",
+                    "taskname": "Supply and Install UGNMFOC Type Optical Fiber Joint Box (Non-Metallic Type)",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8647",
+                        "8513",
+                        "8619",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "ARIEL JACA ALAGENIO",
+                        "SHEHRYAR SHABBIR",
+                        "FOYSAL MAHMOUD",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "working",
+                        "going on leave"
+                    ],
+                    "start": "2024-04-28",
+                    "end": "2024-04-30"
+                },
+                {
+                    "id": "Task 15",
+                    "taskname": "Supply and Install Fiber Optic Cable Management Rack (FOMR)",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8647",
+                        "8513",
+                        "8619",
+                        "8595",
+                        "8645",
+                        "7239",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "ARIEL JACA ALAGENIO",
+                        "SHEHRYAR SHABBIR",
+                        "FOYSAL MAHMOUD",
+                        "MD ABDUL KHALEK",
+                        "ABDULHAKIM ABU RADHI",
+                        "JACKIE CRISTOBAL CONCEPCION",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-05-01",
+                    "end": "2024-05-04"
+                },
+                {
+                    "id": "Task 16",
+                    "taskname": "Supply and Install Fiber Splicing/Termination Panel (FSTP-RM) Rack Mounted Type",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8647",
+                        "8513",
+                        "8619",
+                        "8595",
+                        "8645",
+                        "7239",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "ARIEL JACA ALAGENIO",
+                        "SHEHRYAR SHABBIR",
+                        "FOYSAL MAHMOUD",
+                        "MD ABDUL KHALEK",
+                        "ABDULHAKIM ABU RADHI",
+                        "JACKIE CRISTOBAL CONCEPCION",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "going on leave",
+                        "going on leave"
+                    ],
+                    "start": "2024-05-05",
+                    "end": "2024-05-10"
+                },
+                {
+                    "id": "Task 17",
+                    "taskname": "Supply Fiber Optic Pigtail One end: (LC-APC Type) ITU-T-G.652D",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8560",
+                        "8590"
+                    ],
+                    "employees_name": [
+                        "REHAN RAIS IDRISI",
+                        "MD SULMAN HOSSAIN"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working"
+                    ],
+                    "start": "2024-05-11",
+                    "end": "2024-05-14"
+                },
+                {
+                    "id": "Task 18",
+                    "taskname": "Supply and Install Communications Cable Ladder/Tray (12\" wide)",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8645",
+                        "8560",
+                        "8590",
+                        "8645",
+                        "8560",
+                        "8590",
+                        "8524"
+                    ],
+                    "employees_name": [
+                        "ABDULHAKIM ABU RADHI",
+                        "REHAN RAIS IDRISI",
+                        "MD SULMAN HOSSAIN",
+                        "ABDULHAKIM ABU RADHI",
+                        "REHAN RAIS IDRISI",
+                        "MD SULMAN HOSSAIN",
+                        "MOHAMMED NASLAH"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "working",
+                        "going on leave"
+                    ],
+                    "start": "2024-05-15",
+                    "end": "2024-05-23"
+                },
+                {
+                    "id": "Task 19",
+                    "taskname": "Complete Splicing, Testing & Commissioning of each link",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "8560",
+                        "8590",
+                        "8595",
+                        "7762"
+                    ],
+                    "employees_name": [
+                        "REHAN RAIS IDRISI",
+                        "MD SULMAN HOSSAIN",
+                        "MD ABDUL KHALEK",
+                        "IFTIKHAR KHAN"
+                    ],
+                    "work_status": [
+                        "working",
+                        "working",
+                        "working",
+                        "going on leave"
+                    ],
+                    "start": "2024-05-24",
+                    "end": "2024-05-29"
+                },
+                {
+                    "id": "Task 20",
+                    "taskname": "Fiber Inspection",
+                    "name": "Activity / Task ",
+                    "employees_id": [
+                        "7877"
+                    ],
+                    "employees_name": [
+                        "Unknown"
+                    ],
+                    "work_status": [
+                        "working"
+                    ],
+                    "start": "2024-06-14",
+                    "end": "2024-06-29"
+                }
+            ]
+
+
+            // selecting DOM elements
+            const gantt = document.querySelector('.gantt');
+            let button = document.createElement('button')
+            const dateMonth = document.querySelectorAll('.months')
+            let AITextBox = document.querySelector('.aitextbox')
+            let wrapper = document.querySelector('#ganttChart')
+            let crossBtn = document.querySelector('.cross-btn')
+
+            let loader = document.querySelector('.loader')
+            var heading = document.querySelector('.heading')
+            let popupBox = document.querySelector('.popup')
+            let table = document.getElementById('taskDetailsTable')
+            const body = document.body;
+
+            // button.className = 'button';
+
+
+
+
+
+
+
+
+            //Creating Parent Wrapper box dynamically
+            for (let i = 0; i < ganttData.length; i++) {
+
+                const loopData = ganttData[i]
+                const newBox = document.createElement('div')
+                const newBoxRow = document.createElement('div')
+                const ul = document.createElement('ul')
+
+
+                newBox.className = 'gantt__row';
+                newBoxRow.className = 'gantt__row-first';
+                ul.className = 'gantt__row-bars'
+
+                newBoxRow.style.textAlign = 'left'
+                newBoxRow.style.paddingLeft = '10px'
+                newBoxRow.style.fontSize = '11px'
+
+
+
+
+                const startDate = ganttData[i].start;
+                const endDate = ganttData[i].end;
+
+                const convert = new Date(startDate)
+                const convert2 = new Date(endDate)
+
+                let startMonth = convert.getMonth() + 1;
+                let endMonth = convert2.getMonth() + 2;
+
+                let stringStartMonth = startMonth.toString()
+                let stringEndMonth = endMonth.toString()
+
+
+
+                const li = document.createElement('li')
+
+
+                ul.style.gridColumnStart = '2'
+                li.style.gridColumn = `${stringStartMonth}/${stringEndMonth}`
+                li.style.fontSize = '9px';
+                li.style.textAlign = 'center'
+                li.style.padding = '8px'
+
+                newBoxRow.style.position = 'relative';
+
+                const name = ganttData[i].name;
+                const milestone = 'Milstone'
+
+
+                if (name === milestone) {
+                    li.style.backgroundColor = '#8ecae6';
+                } else {
+                    li.style.backgroundColor = '#2a6f97'
+                }
+                li.innerHTML = `${ganttData[i].name}`;
+
+                li.addEventListener('mouseover', function () {
+                    const divForDate = document.createElement('div')
+                    const span = document.createElement('span')
+                    const item1 = document.createElement('li')
+                    const item2 = document.createElement('li')
+
+                    span.className = 'sedate'
+                    item1.innerHTML = `start date: ${startDate}`
+                    item2.innerHTML = `end date: ${endDate}`
+                    span.append(item1, item2)
+                    divForDate.appendChild(span)
+                    newBoxRow.appendChild(divForDate)
+
+                })
+                li.addEventListener('mouseout', function () {
+                    li.innerHTML = `${ganttData[i].name}`
+                    newBoxRow.lastChild.remove()
+
+                })
+
+                li.addEventListener('click', function (e) {
+
+                    table.getElementsByTagName('tbody')[0].innerHTML = '';
+
+
+
+
+                    for (let k = 0; k < ganttData[i].employees_id.length; k++) {
+
+                        const tbody = table.getElementsByTagName('tbody')[0]
+                        const newRow = tbody.insertRow()
+
+                        const cell2 = newRow.insertCell(0)
+                        cell2.innerHTML = ganttData[i].name;
+                        const cell3 = newRow.insertCell(1)
+                        cell3.innerHTML = ganttData[i].employees_name[k];
+                        const cell4 = newRow.insertCell(2)
+                        cell4.innerHTML = ganttData[i].work_status[k];
+                        let cell5 = newRow.insertCell(3)
+                        cell5.innerHTML = ''
+
+                        // let workStatus = loopData.work_status;
+
+
+
+                        if (ganttData[i].work_status[k] == "going on leave") {
+                            let btn = document.createElement('button')
+                            btn.className = 'button'
+
+
+
+
+                            btn.addEventListener('click', function (e) {
+                                popupBox.style.display = 'block'
+                                wrapper.style.opacity = 0.1;
+
+
+                            })
+                            button2.addEventListener('click', function () {
+                                popupBox.style.display = 'none'
+                                wrapper.style.opacity = 2
+                            })
+
+                            btn.innerHTML = 'Suggetion'
+                            cell5.innerText = ''
+                            cell5.appendChild(btn)
+
+                            let textPara;
+                            btn.addEventListener('click', function () {
+                                let currentEmployeeId = ganttData[i].employees_id[k];
+                                    console.log(currentEmployeeId)
+
+                                var formData = new FormData();
+                                formData.append("emp_id", currentEmployeeId);
+
+                                fetch("/recommendation/", {
+                                    method: "POST",
+                                    body: formData,
+                                })
+                                    .then((response) =>
+                                        response.json()
+                                    )
+
+                                    .then(data => {
+
+                                        // if(!data.recommendation){
+                                        //     let spinner = document.getElementById('progress-container')
+                                        //     AITextBox.appendChild(spinner)
+                                        // }
+
+                                        // heading.innerText = 'Intelligence Activated'
+                                        textPara = data.recommendation;
+                                        console.log(textPara)
+
+                                        let typed = new Typed('.type-auto', {
+
+                                            strings: [`${textPara}`],
+                                            typeSpeed: 50,
+                                            loop: false,
+                                            loopCount: 1,
+                                            showCursor: false,
+                                        })
+
+
+
+                                    });
+
+
+
+
+
+                            })
+
+
+                        }
+                    }
+
+                    const firstRow = table.querySelector('tbody tr');
+
+                    if (firstRow) {
+                        // Scroll to the first row of the table
+                        firstRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+
+
+                })
+
+
+
+
+                ul.appendChild(li)
+                newBoxRow.innerHTML = ganttData[i].taskname;
+                newBox.appendChild(newBoxRow)
+                newBox.appendChild(ul)
+                gantt.appendChild(newBox)
+
+                if (newBoxRow.innerText.length > 1) {
+                    li.style.height = '15px'
+
+                }
+
+            }
+
+            const button2 = document.createElement('button')
+            button2.innerHTML = 'X'
+            crossBtn.appendChild(button2)
+
+            // let button2 = document.createElement('button')
+            // button2.className = 'button'
+            // crossBtn.appendChild(button2)
+
+            // button2.innerHTML = 'X';
+            // btn.addEventListener('click', function (e) {
+            //     popupBox.style.display = 'block'
+            //     console.log('kk')
+            //     wrapper.style.opacity = 0.1;
+            // })
+            // button2.addEventListener('click', function () {
+            //     popupBox.style.display = 'none'
+            //     wrapper.style.opacity = 2
+            // })
+        </script>
+</body>
+
+</html>
