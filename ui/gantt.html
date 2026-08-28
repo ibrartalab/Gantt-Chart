@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link rel="stylesheet" href="gantt.css" />
+    <script src="gantt.js"></script>
     <title>Gantt Chart UI</title>
   </head>
   <body>
@@ -12,6 +13,64 @@
       <h1>Gantt Chart UI</h1>
     </header>
     <main>
+      <!-- Pop-up container for adding a new task -->
+      <div class="task-popup-modal">
+        <form class="input-task-details">
+          <h2>Add New Task</h2>
+
+          <!-- Task Name -->
+          <div class="task-input-container">
+            <label for="task-name">Task name</label>
+            <input
+              type="text"
+              id="task-name"
+              name="taskName"
+              required
+              placeholder="Enter task name"
+            />
+          </div>
+
+          <!-- Start Date -->
+          <div class="task-input-container">
+            <label for="task-start-date">Start date</label>
+            <input type="date" id="task-start-date" name="startDate" required />
+          </div>
+
+          <!-- End Date -->
+          <div class="task-input-container">
+            <label for="task-end-date">End date</label>
+            <input type="date" id="task-end-date" name="endDate" required />
+          </div>
+
+          <!-- Select Team -->
+          <div class="task-input-container">
+            <label for="task-team">Select team</label>
+            <select id="task-team" name="taskTeam">
+              <option value="">-- Choose a Team --</option>
+              <option value="engineering">Engineering</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+            </select>
+          </div>
+
+          <!-- Assign To -->
+          <div class="task-input-container">
+            <label for="task-assignee">Assign to</label>
+            <input
+              type="text"
+              id="task-assignee"
+              name="taskAssignee"
+              placeholder="e.g., Jane Doe"
+            />
+          </div>
+          <!-- Form Actions -->
+          <div class="task-form-actions">
+            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="submit" class="btn-submit">Add Task</button>
+          </div>
+        </form>
+      </div>
+
       <section class="sec-1">
         <aside class="task-list">
           <div class="add-new-task-container">
