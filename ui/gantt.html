@@ -44,21 +44,15 @@
             <label for="task-team">Select team</label>
             <select id="task-team" name="taskTeam">
               <option value="">-- Choose a Team --</option>
-              <option value="engineering">Engineering</option>
-              <option value="design">Design</option>
-              <option value="marketing">Marketing</option>
             </select>
           </div>
 
           <!-- Assign To -->
           <div class="task-input-container">
             <label for="task-assignee">Assign to</label>
-            <input
-              type="text"
-              id="task-assignee"
-              name="taskAssignee"
-              placeholder="e.g., Jane Doe"
-            />
+            <select name="task-assignee" id="task-assignee">
+              <option value="">-- Choose a Team Member --</option>
+            </select>
           </div>
           <div class="task-input-container">
             <label for="task-dependencies">Add Dependencies</label>
@@ -72,7 +66,7 @@
           <!-- Form Actions -->
           <div class="task-form-actions">
             <button type="button" id="btn-cancel" class="btn-cancel" >Cancel</button>
-            <button type="submit" class="btn-submit">Add Task</button>
+            <button type="button" id="btn-submit" class="btn-submit">Add Task</button>
           </div>
         </form>
       </div>
@@ -80,10 +74,10 @@
       <!--Overlay Container To stop interacting with main app while modal is open-->
       <div class="overlay" hidden></div>
 
-      <!--Toast Message-->
+      <!-- Toast Message
       <div class="taost-success">
         Success done!
-      </div>
+      </div> -->
 
     <!--Header Section -->
     <header>
@@ -129,5 +123,6 @@
     </footer>
     <!--Add your logic files here or add into the head using deffer keyword-->
     <script src="gantt.js"></script>
+    <script src="./data/data.js"></script>
   </body>
 </html>

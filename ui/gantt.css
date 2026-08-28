@@ -53,6 +53,7 @@ main{
   
 }
 
+/* Overlay Container Design */
 .overlay{
   background-color: #86828274;
   opacity: 1;
@@ -234,7 +235,8 @@ main{
   cursor: pointer;
 }
 
-.taost-success{
+/* Toast/Taoster Success Design */
+.toast-success{
   position: absolute;
   bottom: 10%;
   right:10%;
@@ -245,8 +247,41 @@ main{
   border-top:4px solid greenyellow;
   color:green;
   z-index: 20;
+  animation: slideInAndOut 4s ease-in-out forwards;
 }
 
+.toast-error{
+  position: absolute;
+  bottom: 10%;
+  right:10%;
+  width:fit-content;
+  height:fit-content;
+  background-color: #f1f5f9;
+  padding: 16px;
+  border-top:4px solid rgb(255, 47, 47);
+  color:rgb(128, 0, 0);
+  z-index: 20;
+  animation: slideInAndOut 4s ease-in-out forwards;
+}
+
+@keyframes slideInAndOut {
+  0%{
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  8%{
+    transform: translateX(0);
+    opacity: 1;
+  }
+  92%{
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100%{
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
 
 
 /* Gantt Chart Container Styling */
