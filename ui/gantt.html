@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    
     <link rel="stylesheet" href="gantt.css" />
-    <script src="gantt.js"></script>
+
     <title>Gantt Chart UI</title>
   </head>
   <body>
@@ -14,7 +15,7 @@
     </header>
     <main>
       <!-- Pop-up container for adding a new task -->
-      <div class="task-popup-modal">
+      <div class="task-popup-modal" hidden>
         <form class="input-task-details">
           <h2>Add New Task</h2>
 
@@ -63,18 +64,30 @@
               placeholder="e.g., Jane Doe"
             />
           </div>
+          <div class="task-input-container">
+            <label for="task-dependencies">Add Dependencies</label>
+            <input
+              type="text"
+              id="task-dependencies"
+              name="taskDependencies"
+              placeholder="e.g., Task 1, Task 2"
+            />
+          </div>
           <!-- Form Actions -->
           <div class="task-form-actions">
-            <button type="button" class="btn-cancel">Cancel</button>
+            <button type="button" id="btn-cancel" class="btn-cancel" >Cancel</button>
             <button type="submit" class="btn-submit">Add Task</button>
           </div>
         </form>
       </div>
 
+      <!--The Sidebar Seciton-->
       <section class="sec-1">
         <aside class="task-list">
           <div class="add-new-task-container">
-            <button class="add-new-task-btn">+ Add New Task</button>
+            <button type="button" id="add-new-task-btn">
+              + Add New Task
+            </button>
           </div>
           <div class="todo-list">
             <h3>Todo <span>(33)</span></h3>
@@ -94,6 +107,8 @@
           </div>
         </aside>
       </section>
+
+      <!--The Main Gantt Chart View-->
       <section class="sec-2">
         <div class="main-gantt-area-wrapper">This</div>
       </section>
@@ -101,5 +116,7 @@
     <footer>
       <p>This is the footer section!</p>
     </footer>
+    <!--Add your logic files here or add into the head using deffer keyword-->
+    <script src="gantt.js"></script>
   </body>
 </html>
