@@ -10,11 +10,7 @@
     <title>Gantt Chart UI</title>
   </head>
   <body>
-    <header>
-      <h1>Gantt Chart UI</h1>
-    </header>
-    <main>
-      <!-- Pop-up container for adding a new task -->
+    <!-- Pop-up container for adding a new task -->
       <div class="task-popup-modal" hidden>
         <form class="input-task-details">
           <h2>Add New Task</h2>
@@ -81,11 +77,21 @@
         </form>
       </div>
 
+      <!--Overlay Container To stop interacting with main app while modal is open-->
+      <div class="overlay" hidden></div>
+
       <!--Toast Message-->
       <div class="taost-success">
         Success done!
       </div>
 
+    <!--Header Section -->
+    <header>
+      <h1>Gantt Chart UI</h1>
+    </header>
+
+    <!--Main Content Area-->
+    <main >
       <!--The Sidebar Seciton-->
       <section class="sec-1">
         <aside class="task-list">
