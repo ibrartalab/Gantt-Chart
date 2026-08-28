@@ -1,6 +1,6 @@
 // Store this data for furthur use in Gantt Chart UI app.
 // Use local storage to store the data.
-const companyData = {
+const companyData = [{
     companyId: `C${Math.floor(Math.random() * 1000)}`,
     companyName: "Tech Innovators Inc.",
     projectName: "NextGen Web Application Development",
@@ -67,12 +67,14 @@ const companyData = {
             }
         ]
     }
-};
+}];
 
 // Save company data to local storage
 // On first load, check if company data already exists in local storage
-window.addEventListener("DOMContentLoaded",() => {
-    if(!localStoreage.getItem("companyData")){
+if (typeof (Storage) !== "undefined") {
+    if (!localStorage.getItem("companyData")) {
         localStorage.setItem("companyData", JSON.stringify(companyData));
     }
-})
+}
+
+

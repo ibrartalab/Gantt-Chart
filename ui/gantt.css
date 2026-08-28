@@ -223,6 +223,22 @@ main{
   cursor: pointer;
 }
 
+.taost-success{
+  position: absolute;
+  bottom: 10%;
+  right:10%;
+  width:fit-content;
+  height:fit-content;
+  background-color: #f1f5f9;
+  padding: 16px;
+  border-top:4px solid greenyellow;
+  color:green;
+}
+
+@keyframes appearFromSide{
+  
+}
+
 /* Gantt Chart Container Styling */
 .sec-2 {
   flex: 1;

@@ -5,6 +5,7 @@ const addNewTaskButton = document.getElementById("add-new-task-btn");
 const closeModalButton = document.getElementById("btn-cancel");
 const saveTaskButton = document.getElementById("btn-submit");
 const tasksForm = document.getElementsByClassName("input-task-details");
+const team = document.getElementById("task-team");
 
 // Enable and disable modal popup for adding new task
 addNewTaskButton.addEventListener("click", () => {
@@ -16,6 +17,9 @@ closeModalButton.addEventListener("click", () => {
 });
 
 // Manage data in local storage for Gannt Chart UI
+const companyInfo = localStorage.getItem("companyData");
+console.log(companyInfo);
+
 
 saveTaskButton.addEventListener("click", (event) => {
     event.preventDefault();
