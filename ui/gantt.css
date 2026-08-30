@@ -190,8 +190,14 @@ main{
   padding: 16px;
   background-color: #f1f5f9;
   border-radius: 8px;
+  height: calc(100% - 50px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
 }
-
 
 .add-new-task-container {
   width: 100%;
@@ -215,22 +221,13 @@ main{
   font-weight: bold;
 }
 
-.task-list {
-  width: 100%;
-  height: calc(100% - 50px);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 12px;
-}
+
 
 .task-list h3 {
   width: 100%;
   text-align: left;
   font-size: 14px;
-  color: rgb(35, 55, 236);
+  color: #2337ec;
   padding: 4px 8px;
   cursor: pointer;
 }

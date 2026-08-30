@@ -7,6 +7,7 @@ const tasksForm = document.getElementsByClassName("input-task-details");
 const teamContainer = document.getElementById("task-team");
 const assignee = document.getElementById("task-assignee");
 const overlayContainer = document.getElementsByClassName("overlay");
+const todoTaskContainer = document.getElementsByClassName("todo-todos");
 
 // Toggle Modal Visibility
 addNewTaskButton.addEventListener("click", () => {
@@ -63,7 +64,7 @@ function createTask() {
         console.log(formElement.taskName);
         
         // Extracted data matching precise HTML input 'name' attributes
-        const taskData = {
+        const taskData = [{
             id: `T${Math.floor(Math.random() * 1000)}`,
             taskName: formElement.taskName.value,
             startDate: formElement.startDate.value,
@@ -79,7 +80,7 @@ function createTask() {
             notes: "",
             milestones: false,
             progress: 0
-        };
+        }];
 
         const isSaved = saveToLocalStorage("taskData", taskData);
 
@@ -102,5 +103,25 @@ function createTask() {
     });
 }
 
+// Rendered tasks into the side navbar
+function showTodoTasks(){
+    const data = JSON.parse(localStorage.getItem("taskData"));
+    console.log(data);
+
+    const countSpan = document.getElementsByClassName("todos-count")[0];
+    countSpan.textContent = `(${data.length})`
+
+    data.map((task) => {
+        const span = document.createElement("span");
+        span.textContent = task.taskName;
+        span.style.fontSize = "14px";
+        span.style.color = "#2337ec";
+        span.style.padding = "4px 8px";
+        span.style.fontWeight = "medium";
+        todoTaskContainer[0].appendChild(span);
+    });
+}
+
 insertIntoTaskForm();
 createTask();
+showTodoTasks()
