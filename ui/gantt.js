@@ -22,7 +22,7 @@ closeModalButton.addEventListener("click", () => {
 // Load structural company data
 const companyInfo = JSON.parse(localStorage.getItem("companyData"));
 
-// Populating Dynamic Select Elements
+// Populating Dynamic Select Elements for team members and teams inputs fields
 function insertIntoTaskForm() {
     if (companyInfo && companyInfo[0] && companyInfo[0].teams) {
         companyInfo[0].teams.forEach((team) => {
@@ -34,15 +34,15 @@ function insertIntoTaskForm() {
             team.teamMembers.forEach((member) => {
                 const assigneeOption = document.createElement("option");
                 assigneeOption.value = member.name;
-                assigneeOption.textContent = member.name;
+                assigneeOption.textContent = `${member.name} - ${member.role}`;
                 assignee.appendChild(assigneeOption);
             });
         });
     }
 }
 
-// Storage management
-function saveTaskToLocalStorage(taskKey, taskData) {
+// Local storage managment factory function
+function saveToLocalStorage(taskKey, taskData) {
     try {
         const stringified = JSON.stringify(taskData);
         localStorage.setItem(taskKey, stringified);
@@ -61,6 +61,7 @@ function createTask() {
         const formElement = tasksForm[0];
         console.log(tasksForm);
         console.log(formElement.taskName);
+        
         // Extracted data matching precise HTML input 'name' attributes
         const taskData = {
             id: `T${Math.floor(Math.random() * 1000)}`,
@@ -80,7 +81,7 @@ function createTask() {
             progress: 0
         };
 
-        const isSaved = saveTaskToLocalStorage("taskData", taskData);
+        const isSaved = saveToLocalStorage("taskData", taskData);
 
         // Output result response
         const toast = document.createElement("div");
