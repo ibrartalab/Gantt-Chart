@@ -221,8 +221,6 @@ main{
   font-weight: bold;
 }
 
-
-
 .task-list h3 {
   width: 100%;
   text-align: left;
@@ -230,6 +228,27 @@ main{
   color: #2337ec;
   padding: 4px 8px;
   cursor: pointer;
+}
+.todo-todos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 6px;
+}
+
+.todo-task{
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4px 8px;
+  color: #000000; 
+}
+
+.todo-task-ring{
+  width: 6px;
+  height: 6px;
+  background-color: #2337ec;
+  border-radius: 24px;
+  padding: 4px 4px;
 }
 
 /* Toast/Taoster Success Design */

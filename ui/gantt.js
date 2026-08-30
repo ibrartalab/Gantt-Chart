@@ -106,18 +106,19 @@ function createTask() {
 // Rendered tasks into the side navbar
 function showTodoTasks(){
     const data = JSON.parse(localStorage.getItem("taskData"));
-    console.log(data);
 
     const countSpan = document.getElementsByClassName("todos-count")[0];
     countSpan.textContent = `(${data.length})`
 
     data.map((task) => {
         const span = document.createElement("span");
+        const spanRing = document.createElement("div");
+
+        spanRing.classList.add("todo-task-ring");
+        span.classList.add("todo-task");
         span.textContent = task.taskName;
-        span.style.fontSize = "14px";
-        span.style.color = "#2337ec";
-        span.style.padding = "4px 8px";
-        span.style.fontWeight = "medium";
+
+        todoTaskContainer[0].appendChild(spanRing);
         todoTaskContainer[0].appendChild(span);
     });
 }
