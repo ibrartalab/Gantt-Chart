@@ -8,6 +8,8 @@ const teamContainer = document.getElementById("task-team");
 const assignee = document.getElementById("task-assignee");
 const overlayContainer = document.getElementsByClassName("overlay");
 const todoTaskContainer = document.getElementsByClassName("todo-todos");
+const timeline = document.getElementsByClassName("s-date-e-date");
+const dayNumber = document.getElementsByClassName("day-number");
 
 // Toggle Modal Visibility
 addNewTaskButton.addEventListener("click", () => {
@@ -20,10 +22,12 @@ closeModalButton.addEventListener("click", () => {
     overlayContainer[0].setAttribute("hidden", true);
 });
 
-// Load structural company data
+// Load local storage data here
 const companyInfo = JSON.parse(localStorage.getItem("companyData"));
+const tasksData = JSON.parse(localStorage.getItem("taskData"));
 
 // Populating Dynamic Select Elements for team members and teams inputs fields
+
 function insertIntoTaskForm() {
     if (companyInfo && companyInfo[0] && companyInfo[0].teams) {
         companyInfo[0].teams.forEach((team) => {
@@ -105,12 +109,11 @@ function createTask() {
 
 // Rendered tasks into the side navbar
 function showTodoTasks(){
-    const data = JSON.parse(localStorage.getItem("taskData"));
-
+    
     const countSpan = document.getElementsByClassName("todos-count")[0];
-    countSpan.textContent = `(${data.length})`
+    countSpan.textContent = `(${tasksData.length})`
 
-    data.map((task) => {
+    tasksData.map((task) => {
         const span = document.createElement("span");
         const spanRing = document.createElement("div");
 
@@ -123,6 +126,37 @@ function showTodoTasks(){
     });
 }
 
+function renderTimeline(){
+    tasksData.forEach((task) => {
+        const s = task.startDate.split("-");
+        const e = task.endDate.split("-");
+        const sFormate = `${s[1]} ${s[2]} - ${e[1]} ${e[2]}`;
+        const span = document.createElement("span");
+        span.classList.add("s-date-e-date-n");
+        span.textContent = sFormate;
+        timeline[0].appendChild(span);
+
+        const numsArr = new Array();
+
+        switch(s[1]){
+            case "08":
+                for (let index = 1; index <= 31; index++) {
+                    numsArr.push(index);   
+                }
+        }
+
+        numsArr.map((n) => {
+            const span = document.createElement("div");
+            span.classList.add("day-number-n");
+            span.textContent = n;
+            dayNumber[0].appendChild(span);
+        })
+    })
+}
+
+
+
 insertIntoTaskForm();
 createTask();
 showTodoTasks()
+renderTimeline();
