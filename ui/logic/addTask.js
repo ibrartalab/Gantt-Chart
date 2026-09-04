@@ -1,10 +1,10 @@
-export const body = document.getElementsByTagName("body");
+const body = document.getElementsByTagName("body");
 
-export const saveTaskButton = document.getElementById("btn-submit");
-export const tasksForm = document.getElementsByClassName("input-task-details");
-export const teamContainer = document.getElementById("task-team");
-export const assignee = document.getElementById("task-assignee");
-export const overlayContainer = document.getElementsByClassName("overlay");
+const saveTaskButton = document.getElementById("btn-submit");
+const tasksForm = document.getElementsByClassName("input-task-details");
+const teamContainer = document.getElementById("task-team");
+const assignee = document.getElementById("task-assignee");
+
 
 // Load local storage data here
 const companyInfo = JSON.parse(localStorage.getItem("companyData"));
