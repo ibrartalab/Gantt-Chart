@@ -1,0 +1,9 @@
+/* Overlay Container Design */
+.overlay{
+  background-color: #86828274;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  position: absolute;
+}

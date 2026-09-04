@@ -1,0 +1,55 @@
+/* Gantt Chart Container Styling */
+.sec-2 {
+  flex: 1;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 16px;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.main-gantt-area-wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.s-date-e-date{
+  width: 100%;
+  height: 10px;
+  display: flex;
+}
+
+.s-date-e-date-n{
+   color: #1c1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  height: 10px;
+  margin-left: 20px;
+}
+
+.day-number{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.day-number-n{
+   color: #959393;
+  font-size: 12px;
+  font-weight: 400;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: auto;
+  text-align: center;
+  border-right: 1px solid #e5e7eb;
+}
